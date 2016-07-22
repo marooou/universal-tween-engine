@@ -36,6 +36,8 @@ myTween.resume();
 myTween.setCallback(callback);
 myTween.setCallbackTriggers(flags);
 myTween.setUserData(obj);
+myTween.setSpeed(1.5f); // makes the tween 50% faster
+myTween.setTweenMotion(tweenMotion) // sets a custom tween motion behavior
 
 // You can of course chain everything:
 
