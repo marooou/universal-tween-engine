@@ -1,6 +1,6 @@
-package aurelienribon.tweenengine.deltas;
+package aurelienribon.tweenengine.motions;
 
-import aurelienribon.tweenengine.TweenDelta;
+import aurelienribon.tweenengine.TweenMotion;
 
 /**
  * A tween delta which changes the delta time
@@ -11,23 +11,23 @@ import aurelienribon.tweenengine.TweenDelta;
  *   backward, or to 0.5 to play it twice slower than its normal speed.
  * </p>
  */
-public class SpeedTweenDelta implements TweenDelta {
+public class SpeedTweenMotion implements TweenMotion {
 
     private float speed;
 
     /**
-     * Initializes a new instance of the {@link aurelienribon.tweenengine.deltas.SpeedTweenDelta}.
+     * Initializes a new instance of the {@link SpeedTweenMotion}.
      * with a speed of 1.0 (unmodified).
      */
-    public SpeedTweenDelta() {
+    public SpeedTweenMotion() {
         speed = 1.0f;
     }
 
     /**
-     * Initializes a new instance of the {@link aurelienribon.tweenengine.deltas.SpeedTweenDelta}.
+     * Initializes a new instance of the {@link SpeedTweenMotion}.
      * with given initial speed.
      */
-    public SpeedTweenDelta(float initialSpeed) {
+    public SpeedTweenMotion(float initialSpeed) {
         speed = initialSpeed;
     }
 

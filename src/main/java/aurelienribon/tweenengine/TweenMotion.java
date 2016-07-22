@@ -3,7 +3,7 @@ package aurelienribon.tweenengine;
 /**
  * Modifies each frame's delta time before handling the tween.
  */
-public interface TweenDelta {
+public interface TweenMotion {
 
     /**
      * Adjust an original delta time.

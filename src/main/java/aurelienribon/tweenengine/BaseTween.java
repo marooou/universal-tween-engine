@@ -1,7 +1,7 @@
 package aurelienribon.tweenengine;
 
-import aurelienribon.tweenengine.deltas.NormalTweenDelta;
-import aurelienribon.tweenengine.deltas.SpeedTweenDelta;
+import aurelienribon.tweenengine.motions.DefaultTweenMotion;
+import aurelienribon.tweenengine.motions.SpeedTweenMotion;
 
 /**
  * BaseTween is the base class of Tween and Timeline. It defines the
@@ -38,7 +38,7 @@ public abstract class BaseTween<T> {
 
 	// Misc
 	private TweenCallback callback;
-    private TweenDelta tweenDelta;
+    private TweenMotion tweenMotion;
 	private int callbackTriggers;
 	private Object userData;
 
@@ -46,13 +46,10 @@ public abstract class BaseTween<T> {
 	boolean isAutoRemoveEnabled;
 	boolean isAutoStartEnabled;
 
-    protected BaseTween() {
-        tweenDelta = NormalTweenDelta.INSTANCE;
-    }
-
     // -------------------------------------------------------------------------
 
 	protected void reset() {
+        tweenMotion = DefaultTweenMotion.INSTANCE;
 		step = -2;
 		repeatCnt = 0;
 		isIterationStep = isYoyo = false;
@@ -240,21 +237,37 @@ public abstract class BaseTween<T> {
      * Sets the speed of this tween.
      *
      * <p>
-     * The coefficient passed as parameter influences on
+     * This is an equivalent of using the
+     * <code>
+     *     setTweenMotion(new SpeedTweenMotion(speed));
+     * </code>
      * </p>
      *
-     * @param speed
+     * @param speed The speed of the tween (1.0 for normal speed).
      */
     public T setSpeed(float speed) {
         if (speed == 1.0f) {
-            tweenDelta = NormalTweenDelta.INSTANCE;
+            tweenMotion = DefaultTweenMotion.INSTANCE;
         } else {
-            tweenDelta = new SpeedTweenDelta(speed);
+            tweenMotion = new SpeedTweenMotion(speed);
         }
         return (T) this;
     }
 
+    /**
+     * Sets the {@link aurelienribon.tweenengine.TweenMotion} object which
+     * adjust frames' delta time.
+     * @param tweenMotion An object adjusting the tween motion.
+     * @return This tween.
+     */
+    public T setTweenMotion(TweenMotion tweenMotion) {
+        if (tweenMotion == null) {
+            throw new IllegalArgumentException("The tween motion cannot be null.");
+        }
 
+        this.tweenMotion = tweenMotion;
+        return (T) this;
+    }
 
 	// -------------------------------------------------------------------------
 	// Getters
@@ -441,7 +454,7 @@ public abstract class BaseTween<T> {
 	public void update(float delta) {
 		if (!isStarted || isPaused || isKilled) return;
 
-		deltaTime = tweenDelta.adjustDelta(delta);
+		deltaTime = tweenMotion.adjustDelta(delta);
 
 		if (!isInitialized) {
 			initialize();
