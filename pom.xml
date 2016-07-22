@@ -4,9 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>universal-tween-engine</artifactId>
     <groupId>com.aurelienribon</groupId>
-    <version>6.3.3</version>
+    <version>6.4.0</version>
     <packaging>jar</packaging>
     <name>Universal Tween Engine</name>
+
+    <properties>
+        <deployment.url>https://s3-nexus.atsisa.com/content/repositories</deployment.url>
+    </properties>
+
     <build>
         <plugins>
 		  <plugin>
@@ -25,4 +30,17 @@
 		  </plugin>
 		</plugins>
 	</build>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>release.ibg.atsisa.com</name>
+            <url>${deployment.url}/ibg_releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>snapshot.ibg.atsisa.com</name>
+            <url>${deployment.url}/ibg_snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

@@ -1,5 +1,6 @@
 package aurelienribon.tweenengine;
 
+import aurelienribon.tweenengine.equations.Linear;
 import aurelienribon.tweenengine.equations.Quad;
 import java.util.HashMap;
 import java.util.Map;
@@ -207,7 +208,7 @@ public final class Tween extends BaseTween<Tween> {
 	public static Tween to(Object target, int tweenType, float duration) {
 		Tween tween = pool.get();
 		tween.setup(target, tweenType, duration);
-		tween.ease(Quad.INOUT);
+		tween.ease(Linear.INOUT);
 		tween.path(TweenPaths.catmullRom);
 		return tween;
 	}

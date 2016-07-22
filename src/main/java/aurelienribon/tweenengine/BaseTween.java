@@ -1,5 +1,8 @@
 package aurelienribon.tweenengine;
 
+import aurelienribon.tweenengine.deltas.NormalTweenDelta;
+import aurelienribon.tweenengine.deltas.SpeedTweenDelta;
+
 /**
  * BaseTween is the base class of Tween and Timeline. It defines the
  * iteration engine used to play animations for any number of times, and in
@@ -35,6 +38,7 @@ public abstract class BaseTween<T> {
 
 	// Misc
 	private TweenCallback callback;
+    private TweenDelta tweenDelta;
 	private int callbackTriggers;
 	private Object userData;
 
@@ -42,7 +46,11 @@ public abstract class BaseTween<T> {
 	boolean isAutoRemoveEnabled;
 	boolean isAutoStartEnabled;
 
-	// -------------------------------------------------------------------------
+    protected BaseTween() {
+        tweenDelta = NormalTweenDelta.INSTANCE;
+    }
+
+    // -------------------------------------------------------------------------
 
 	protected void reset() {
 		step = -2;
@@ -227,6 +235,26 @@ public abstract class BaseTween<T> {
 		userData = data;
 		return (T) this;
 	}
+
+    /**
+     * Sets the speed of this tween.
+     *
+     * <p>
+     * The coefficient passed as parameter influences on
+     * </p>
+     *
+     * @param speed
+     */
+    public T setSpeed(float speed) {
+        if (speed == 1.0f) {
+            tweenDelta = NormalTweenDelta.INSTANCE;
+        } else {
+            tweenDelta = new SpeedTweenDelta(speed);
+        }
+        return (T) this;
+    }
+
+
 
 	// -------------------------------------------------------------------------
 	// Getters
@@ -413,7 +441,7 @@ public abstract class BaseTween<T> {
 	public void update(float delta) {
 		if (!isStarted || isPaused || isKilled) return;
 
-		deltaTime = delta;
+		deltaTime = tweenDelta.adjustDelta(delta);
 
 		if (!isInitialized) {
 			initialize();
@@ -429,7 +457,7 @@ public abstract class BaseTween<T> {
 		deltaTime = 0;
 	}
 
-	private void initialize() {
+    private void initialize() {
 		if (currentTime+deltaTime >= delay) {
 			initializeOverride();
 			isInitialized = true;
